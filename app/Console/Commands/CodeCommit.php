@@ -22,8 +22,6 @@ class CodeCommit extends Command
     {
         $repo = $this->argument('repo');
 
-        $repositoryService->buildTree();
-
         try {
             $parents = $repositoryService->getParentRepositories($repo);
             $this->line('Pending parent executions: ' . implode(', ', $parents));
