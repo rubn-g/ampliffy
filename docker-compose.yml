@@ -1,0 +1,9 @@
+version: '3'
+services:
+    laravel:
+        build:
+            context: .
+        env_file:
+            - .env
+        volumes:
+            - '.:/var/www/'
