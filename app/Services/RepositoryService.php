@@ -28,7 +28,8 @@ class RepositoryService {
         }
     }
 
-    protected function createRepository($dirname): Repository {
+    protected function createRepository($dirname): Repository
+    {
         $composer = json_decode(Storage::disk('repos')->get($dirname . '/composer.json'), true);
         $repo = new Repository($composer);
 
@@ -42,21 +43,24 @@ class RepositoryService {
 
     protected function fillRelatives(Repository $repo): void
     {
-        foreach ($repo->getDependencies() as $dependant) {
+        foreach ($repo->getDependencies() as $dependant => $version) {
             if (isset($this->repos[$dependant])) {
-                $this->repos[$dependant]->addParent($repo->name);
+                $this->repos[$dependant]->addParent($repo->name, $version);
                 $repo->addChild($this->repos[$dependant]);
             }
         }
     }
 
-    protected function getParents(string $repo): array
+    protected function getParents(string $repo, $parents = []): array
     {
-        $parents = $this->repos[$repo]->getParents();
+        $parentRepos = $this->repos[$repo]->getParents();
+        $parents[$repo] = [];
 
-        foreach ($parents as $name) {
+        foreach ($parentRepos as $name => $version) {
+            $parents[$repo][] = $version;
+
             if ($this->isOwnRepository($name)) {
-                $parents = array_merge($parents, $this->getParents($name));
+                $parents = $this->getParents($name, $parents);
             }
         }
 

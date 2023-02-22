@@ -23,9 +23,9 @@ class Repository {
         return $this->name;
     }
 
-    public function addParent(string $parent): void
+    public function addParent(string $parent, string $version): void
     {
-        $this->parents[] = $parent;
+        $this->parents[$parent] = $version;
     }
 
     public function addChild(Repository $repository): void
@@ -35,7 +35,7 @@ class Repository {
 
     public function getDependencies(): array
     {
-        return array_keys($this->dependencies);
+        return $this->dependencies;
     }
 
     public function getParents(): array

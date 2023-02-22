@@ -1,7 +1,7 @@
 {
     "name": "app/project2",
     "require": {
-        "lib2": "1.0",
+        "lib2": "1.5",
         "lib6": "1.0"
     }
 }

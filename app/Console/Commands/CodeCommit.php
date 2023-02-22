@@ -24,7 +24,12 @@ class CodeCommit extends Command
 
         try {
             $parents = $repositoryService->getParentRepositories($repo);
-            $this->line('Pending parent executions: ' . implode(', ', $parents));
+
+            $this->line('Pending ci/cd executions:');
+
+            foreach ($parents as $parent => $versions) {
+                $this->line(' - ' . $parent . ' ' . implode(', ', $versions));
+            }
         } catch(RepositoryNotOwnedError $error) {
             $this->line('Repository ' . $repo . ' is not owned by the company');
         } catch(\Exception $exception) {
